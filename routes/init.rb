@@ -1,3 +1,5 @@
 require_relative 'admin'
 require_relative 'user'
-
+require_relative 'doc'
+require_relative 'multithreaded'
+require_relative 'chat'

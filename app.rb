@@ -24,4 +24,6 @@ class MyApp < Sinatra::Base
     set :raise_errors, false #false will show nicer error page
     set :show_exceptions, false #true will ignore raise_errors and display backtrace in browser
   end
+
+  run! if app_file == $0
 end

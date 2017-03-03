@@ -1,5 +1,7 @@
 require 'rake/testtask'
 require 'yard'
+require "yard/sinatra"
+
 
 task :default => [:'']
 
@@ -30,5 +32,5 @@ end
 
 YARD::Rake::YardocTask.new do |t|
   t.files   = ['app.rb', '**/helpers/*.rb', '**/routes/*.rb', '**/models/*.rb']
-  t.options = ['--protected', '--private']
+  t.options = ['--plugin', 'yard-sinatra', '--protected', '--private']
 end
