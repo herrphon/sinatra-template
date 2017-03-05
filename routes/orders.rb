@@ -29,30 +29,25 @@ class MyApp < Sinatra::Base
       halt 400
     end
 
-    order = Order.create(
-        :subject => data['subject'],
-        :content => data['content'],
-        :created_at => Time.now.utc,
-        :updated_at => Time.now.utc)
+    order = Order.create( name: data['name'],
+                          description: data['description'] )
 
     halt 500 unless order.save
 
     # PUT requests must return a Location header for the new resource
-    [201, {'Location' => "/orders/#{order.id}"}, jsonp(order.to_json)]
+    [201, {'Location' => "/orders/#{order.id}"}, order.to_json]
   end
 
 
   # list all orders
   get '/orders' do
-    @orders = Order.all
-    erb :orders_index
+    json Order.all
   end
 
 
   # show order
   get '/orders/:id' do
-    @order = Order.find(params[:id])
-    erb :orders_show
+    json Order.find(params[:id])
   end
 
 

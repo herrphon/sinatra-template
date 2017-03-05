@@ -20,3 +20,4 @@ class MyApp < Sinatra::Base
   end
 
 end
+

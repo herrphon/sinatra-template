@@ -19,4 +19,16 @@ class MyApp < Sinatra::Base
     erb :index
   end
 
+  # Test inspired by
+  # https://spin.atomicobject.com/2013/11/12/production-logging-sinatra/
+  get '/test-exceptions' do
+    fail_here = File.read('asdf')
+  end
+
+
+  post '/solve/?' do
+    require 'json'
+    jdata = params[:data]
+    JSON.parse(jdata)
+  end
 end

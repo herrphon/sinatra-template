@@ -16,6 +16,11 @@ $ sequel -d sqlite://db/production.sqlite
 * [Sequel Timestamps](http://sequel.jeremyevans.net/rdoc-plugins/classes/Sequel/Plugins/Timestamps.html)
 
 
+## Models
+
+* [Model Validation](http://sequel.jeremyevans.net/rdoc/files/doc/validations_rdoc.html)
+
+
 
 
 

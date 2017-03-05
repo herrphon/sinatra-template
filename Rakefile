@@ -36,32 +36,46 @@ YARD::Rake::YardocTask.new do |t|
 end
 
 
+# some other ideo here:
+# https://gist.github.com/kalmbach/4471560
 
 namespace :db do
+  require "sequel"
+  Sequel.extension :migration
+  DB = Sequel.connect(ENV["DATABASE_URL"])
 
-  desc "Run migrations"
-  task :migrate, [:version] do |t, args|
-    require "sequel"
 
-    Sequel.extension :migration
-    db = Sequel.connect(ENV.fetch("DATABASE_URL"))
+  desc "Prints current schema version"
+  task :version do
+    version = if DB.tables.include?(:schema_info)
+                DB[:schema_info].first[:version]
+              end || 0
 
-    if args[:version]
-      puts "Migrating to version #{args[:version]}"
-      Sequel::Migrator.run(db, "db/migrations", target: args[:version].to_i)
-    else
-      puts "Migrating to latest"
-      Sequel::Migrator.run(db, "db/migrations")
-    end
+    puts "Schema Version: #{version}"
   end
 
-  desc 'Zap the database my running all the down migrations'
-  task :zap do
-    cmd = "sequel -m db/migrations -M 0 sqlite://db.sqlite"
-    puts cmd
-    puts `#{cmd}`
+
+  desc "Perform migration up to latest migration available"
+  task :migrate do
+    Sequel::Migrator.run(DB, "migrations")
+    Rake::Task['db:version'].execute
   end
 
-  desc 'Reset the database then run the migrations'
-  task :reset => [:zap, :migrate]
+
+  desc "Perform rollback to specified target or full rollback as default"
+  task :rollback, :target do |t, args|
+    args.with_defaults(:target => 0)
+
+    Sequel::Migrator.run(DB, "migrations", :target => args[:target].to_i)
+    Rake::Task['db:version'].execute
+  end
+
+
+  desc "Perform migration reset (full rollback and migration)"
+  task :reset do
+    Sequel::Migrator.run(DB, "migrations", :target => 0)
+    Sequel::Migrator.run(DB, "migrations")
+    Rake::Task['db:version'].execute
+  end
+
 end
