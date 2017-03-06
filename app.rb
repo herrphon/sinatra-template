@@ -1,7 +1,11 @@
 require 'sinatra/base'
+require 'sinatra/json'
+
+require_relative 'db/init'
 require_relative 'routes/init'
 require_relative 'helpers/init'
 require_relative 'models/init'
+
 
 class MyApp < Sinatra::Base
   enable :method_override
@@ -24,4 +28,6 @@ class MyApp < Sinatra::Base
     set :raise_errors, false #false will show nicer error page
     set :show_exceptions, false #true will ignore raise_errors and display backtrace in browser
   end
+
+  run! if app_file == $0
 end
