@@ -47,7 +47,11 @@ class MyApp < Sinatra::Base
 
   # show order
   get '/orders/:id' do
-    json Order.find(params[:id])
+    order = Order.find(params[:id])
+
+    test = order.inspect
+
+    json order
   end
 
 

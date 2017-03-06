@@ -9,13 +9,14 @@ response = RestClient.get(url, headers)
 puts response.inspect
 
 
-puts "asdf"
+puts "---"
 
 
-data = { data: { key: 'I am a value'}}.to_json
+url = 'http://localhost:4567/solve'
+payload = { data: { key: 'I am a value'}}.to_json
 headers = { content_type: 'json', accept: 'json' }
 
-response = RestClient.post 'http://localhost:4567/solve', data , headers
+response = RestClient.post url, payload , headers
 
 puts response.inspect
 
